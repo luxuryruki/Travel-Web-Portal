@@ -1,7 +1,7 @@
-package com.example.travewebportal.user;
+package com.example.travewebportal.user.entity;
 
+import com.example.travewebportal.user.enums.Role;
 import lombok.Getter;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
