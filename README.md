@@ -21,7 +21,7 @@
 
 - **Frontend**: React.js, HTML, CSS, JavaScript
 - **Backend**: Java, Spring Framework
-- **Database**: MongoDB
+- **Database**: MySQL
 - **Authentication**: JWT (JSON Web Tokens)
 - **Deployment**: Docker, AWS/Heroku
 
