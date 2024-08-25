@@ -1,0 +1,52 @@
+
+debug: false #debug 여부 // 너무 많이 나오까 여기서는 false 처리하고 logging에서 필요한 애들을 debug설정해주면된다.
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*" # actuator 의 숨겨진 있는 것들을 활성화 시켜주는 것
+
+logging:
+  level:
+    com.example.com.example.travewebportal: debug
+    org.springframework.web.servlet : debug
+    org.hibernate.SQL: trace
+    org.hibernate.type: trace
+    org.hibernate.orm.jdbc.bind: trace
+
+spring:
+  datasource: # db 설정 정보
+    url: jdbc:mysql://localhost:3306/board
+    username: johnny
+    password: Test!23
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    defer-datasource-initialization: true #resources 폴더 안에 data.sql 파일을 만들어 테스트용 db 데이터를 넣어둘 수 있
+    hibernate:
+      ddl-auto: create # entity를 참고하여 ddl 자동생성
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true #보여지는 sql 포맷을 보기 좋게 설정
+        default_batch_fetch_size: 100 # 연관관계가 있는 테이블들 한번에 셀렉트 문으로 바꿔준다.
+  h2:
+    console:
+      enabled: true #
+  sql:
+    init:
+      mode: always #resources 폴더 안에 data.sql 을 언제 작동시킬지 설정하는 여부
+
+---
+# --- 세개면 별도의 yml 파일로 인식
+#spring:
+#  config:
+#    activate:
+#      on-profile: testDb
+#  datasource: # db 설정 정보
+#    url: jdbc:h2:mem:board;mode=mysql
+#    driver-class-name: org.h2.Driver
+#  sql:
+#    init:
+#      mode: always
+#  test.database.replace:none
