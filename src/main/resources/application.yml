@@ -21,6 +21,9 @@ spring:
     username: johnny
     password: Test!23
     driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:h2:mem:testdb #h2를 기본 데이터로 사용하고 싶을 때
+#    username: sa
+#    driver-class-name: org.h2.Driver
   jpa:
     defer-datasource-initialization: true #resources 폴더 안에 data.sql 파일을 만들어 테스트용 db 데이터를 넣어둘 수 있
     hibernate:
@@ -32,7 +35,7 @@ spring:
         default_batch_fetch_size: 100 # 연관관계가 있는 테이블들 한번에 셀렉트 문으로 바꿔준다.
   h2:
     console:
-      enabled: true #
+      enabled: false # h2 disable
   sql:
     init:
       mode: always #resources 폴더 안에 data.sql 을 언제 작동시킬지 설정하는 여부
