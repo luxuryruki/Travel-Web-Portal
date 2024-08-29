@@ -39,6 +39,10 @@ spring:
   sql:
     init:
       mode: always #resources 폴더 안에 data.sql 을 언제 작동시킬지 설정하는 여부
+  data:
+    rest:
+      base-path: /api
+      detection-strategy: annotated # 어노테이션(@RepositoryRestResource)으로 명시한 리포지토리만
 
 ---
 # --- 세개면 별도의 yml 파일로 인식
