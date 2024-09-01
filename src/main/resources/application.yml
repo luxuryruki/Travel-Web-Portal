@@ -43,6 +43,10 @@ spring:
     rest:
       base-path: /api
       detection-strategy: annotated # 어노테이션(@RepositoryRestResource)으로 명시한 리포지토리만
+  thymeleaf3:
+    decoupled-logic: true
+
+
 
 ---
 # --- 세개면 별도의 yml 파일로 인식
