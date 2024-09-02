@@ -35,7 +35,6 @@ class ArticleControllerTest {
 //                .andDo(print());
     }
 
-    @Disabled
     @DisplayName("[View][GET] Read Article ")
     @Test
     public void given_whenRequestingArticlesView_thenReturnArticlesView() throws Exception {
