@@ -1,10 +1,12 @@
 package com.example.travewebportal.board.controller;
 
+import com.example.travewebportal.board.config.SecurityConfig;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -14,6 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("View Controller - Article")
+@Import(SecurityConfig.class)
 @WebMvcTest
 class ArticleControllerTest {
 
@@ -22,6 +25,8 @@ class ArticleControllerTest {
     public ArticleControllerTest(@Autowired MockMvc mvc) {
         this.mvc = mvc;
     }
+
+
 
     @DisplayName("[View][GET] Article List")
     @Test
