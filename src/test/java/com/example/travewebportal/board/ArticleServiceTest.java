@@ -9,6 +9,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -31,8 +32,22 @@ class ArticleServiceTest {
         //Given
 //        SearchParameters param = SearchParameters.of(SearchType.TITLE,"search keyword");
         //When
-        List<ArticleDto> articles =  sut.searchArticles(SearchType.TITLE,"search keyword"); // Title, Content, Id, Name, Hashtag
+        Page<ArticleDto> articles =  sut.searchArticles(SearchType.TITLE,"search keyword"); // Title, Content, Id, Name, Hashtag
         //Then
         assertThat(articles).isNotNull();
     }
+
+    @DisplayName("Read an article, then return the article")
+    @Test
+    void givenArticleId_whenSearchingArticle_thenReturnArticle(){
+
+        //Given
+//        SearchParameters param = SearchParameters.of(SearchType.TITLE,"search keyword");
+        //When
+        ArticleDto article =  sut.searchArticle(1L);
+        //Then
+        assertThat(article).isNotNull();
+    }
+
+
 }
