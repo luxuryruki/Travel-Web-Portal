@@ -1,6 +1,8 @@
 package com.example.travewebportal.board;
 
+import com.example.travewebportal.board.dto.ArticleCommentDto;
 import com.example.travewebportal.board.dto.ArticleDto;
+import com.example.travewebportal.board.dto.ArticleUpdateDto;
 import com.example.travewebportal.board.enums.SearchType;
 import com.example.travewebportal.board.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,4 +30,15 @@ public class ArticleService {
     public ArticleDto searchArticle(long l) {
         return null;
     }
+
+    public void saveArticle(ArticleDto dto) {
+    }
+
+    public void updateArticle(long articleId,ArticleUpdateDto dto) {
+    }
+
+    public void deleteArticle(long articleId) {
+    }
+
+
 }
