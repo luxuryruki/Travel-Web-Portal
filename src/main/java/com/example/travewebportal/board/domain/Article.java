@@ -16,7 +16,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Getter
-@ToString
+@ToString(callSuper = true)
 @Table(indexes = {
         @Index(columnList = "title"),
         @Index(columnList = "hashTag"),
@@ -32,6 +32,10 @@ public class Article extends AuditingFields {
     private Long id;
 
     @Setter
+    @ManyToOne(optional = false)
+    private UserAccount userAccount;
+
+    @Setter
     @Column(nullable = false)
     private String title;
     @Setter
@@ -41,25 +45,26 @@ public class Article extends AuditingFields {
     private String hashTag;
 
     @ToString.Exclude // 순환참조 방지
-    @OrderBy("id")
+    @OrderBy("createdAt DESC")
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private final Set<ArticleComment> articleComments = new LinkedHashSet<>();
 
     protected Article() {
     }
 
-    private Article(String title, String content, String hashTag) {
+    private Article(UserAccount userAccount, String title, String content, String hashTag) {
+        this.userAccount = userAccount;
         this.title = title;
         this.content = content;
         this.hashTag = hashTag;
     }
 
     //factory method
-    public static Article of(String title, String content, String hashTag) {
-        return new Article(title, content, hashTag);
+    public static Article of(UserAccount userAccount,String title, String content, String hashTag) {
+        return new Article(userAccount, title, content, hashTag);
     }
 
-    //동등성 동일ㅇ성 검사
+    //동등성 동일성 검사
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
