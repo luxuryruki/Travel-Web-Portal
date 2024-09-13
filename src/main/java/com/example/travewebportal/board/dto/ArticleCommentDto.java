@@ -3,6 +3,9 @@ package com.example.travewebportal.board.dto;
 import java.time.LocalDateTime;
 
 public record ArticleCommentDto(
+
+        Long articleId,
+
         LocalDateTime createdAt,
         String createdBy,
         LocalDateTime modifiedAt,
@@ -10,7 +13,7 @@ public record ArticleCommentDto(
         String content
 ) {
 
-    public static ArticleCommentDto of(LocalDateTime createdAt, String createdBy, LocalDateTime modifiedAt, String modifiedBy, String content) {
-        return new ArticleCommentDto(createdAt, createdBy, modifiedAt, modifiedBy, content);
+    public static ArticleCommentDto of(Long articleId, LocalDateTime createdAt, String createdBy, LocalDateTime modifiedAt, String modifiedBy, String content) {
+        return new ArticleCommentDto(articleId, createdAt, createdBy, modifiedAt, modifiedBy, content);
     }
 }

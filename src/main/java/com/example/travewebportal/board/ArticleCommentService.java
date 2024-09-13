@@ -25,4 +25,8 @@ public class ArticleCommentService {
     public List<ArticleCommentDto> searchArticleComment(Long articleId) {
         return List.of();
     }
+
+    public void saveArticleComment(ArticleCommentDto dto){
+
+    }
 }
