@@ -2,6 +2,7 @@ package com.example.travewebportal.board.repository;
 
 import com.example.travewebportal.board.config.JpaConfig;
 import com.example.travewebportal.board.domain.Article;
+import com.example.travewebportal.board.domain.UserAccount;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -27,10 +28,12 @@ class JpaRepositoryTest {
     private final ArticleRepository articleRepository;
 
     private final ArticleCommentRepository articleCommentRepository;
+    private final UserAccountRepository userAccountRepository;
 
-    public JpaRepositoryTest(@Autowired ArticleRepository articleRepository,@Autowired ArticleCommentRepository articleCommentRepository) {
+    public JpaRepositoryTest(@Autowired ArticleRepository articleRepository,@Autowired ArticleCommentRepository articleCommentRepository, @Autowired UserAccountRepository userAccountRepository) {
         this.articleRepository = articleRepository;
         this.articleCommentRepository = articleCommentRepository;
+        this.userAccountRepository = userAccountRepository;
     }
 
     @DisplayName("Select Test")
@@ -53,8 +56,9 @@ class JpaRepositoryTest {
     void givenTestData_whenInserting_thenWorksFine(){
         // Given
         long previousCount = articleRepository.count();
-        Article article = Article.of("New Article","New Content", "#Test");
 
+        UserAccount userAccount = userAccountRepository.save(UserAccount.of("Johnny","pw",null,null,null));
+        Article article = Article.of(userAccount,"New Article","New Content", "#Test");
         // When
         articleRepository.save(article);
         // Then

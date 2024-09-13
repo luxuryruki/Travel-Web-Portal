@@ -2,6 +2,7 @@ package com.example.travewebportal.board;
 
 import com.example.travewebportal.board.domain.Article;
 import com.example.travewebportal.board.domain.ArticleComment;
+import com.example.travewebportal.board.domain.UserAccount;
 import com.example.travewebportal.board.dto.ArticleCommentDto;
 import com.example.travewebportal.board.repository.ArticleCommentRepository;
 import com.example.travewebportal.board.repository.ArticleRepository;
@@ -13,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -41,11 +43,15 @@ class ArticleCommentServiceTest {
         given(articleRepository.findById(articleId)).willReturn(Optional.of(
                 Article.of("title","content","hashTag")
         ));
+        ArticleComment expected = createArticleComment("content");
+        given(articleCommentRepository.findById(articleId)).willReturn(List.of(expected));
         //when
-        List<ArticleCommentDto> articleComments = sut.searchArticleComment(articleId);
+        List<ArticleCommentDto> actual = sut.searchArticleComment(articleId);
         //then
-        assertThat(articleComments).isNotNull();
-        then(articleRepository).should().findById(articleId);
+        assertThat(actual)
+                .hasSize(1)
+                .first().hasFieldOrPropertyWithValue("content", expected.getContent());
+        then(articleCommentRepository).should().findByArticleId(articleId);
     }
 
     @DisplayName("create article comments")
@@ -55,4 +61,39 @@ class ArticleCommentServiceTest {
         //when
         //then
     }
+
+    private UserAccountDto createUserAccountDto(){
+        return UserAccountDto.of(
+                1L,
+                "Johnny",
+                "pw",
+                "johnny@google.com",
+                "Johnny",
+                null,
+                LocalDateTime.now(),
+                "Johnny",
+                LocalDateTime.now(),
+                "Johnny"
+        );
+    }
+
+    private ArticleComment createArticleComment(String content){
+        return ArticleComment.of(
+                createUserAccount(),
+                Article.of(
+                        createUserAccount(), "title", "content", "hashTag"),
+                content
+        );
+    }
+
+    private UserAccount createUserAccount(){
+        return UserAccount.of(
+                "Johnny",
+                "pw",
+                "johnny@google.com",
+                "Johnny",
+                null
+        );
+    }
+
 }
