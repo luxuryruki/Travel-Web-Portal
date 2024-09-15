@@ -7,6 +7,7 @@ import com.example.travewebportal.board.enums.SearchType;
 import com.example.travewebportal.board.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +22,7 @@ public class ArticleService {
     private final ArticleRepository repository;
 
     @Transactional(readOnly = true)
-    public Page<ArticleDto> searchArticles(SearchType title, String searchKeyword) {
+    public Page<ArticleDto> searchArticles(SearchType title, String searchKeyword, Pageable page) {
         return Page.empty();
 
     }

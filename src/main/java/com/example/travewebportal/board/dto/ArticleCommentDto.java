@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 public record ArticleCommentDto(
 
+        Long id,
         Long articleId,
 
         LocalDateTime createdAt,
@@ -13,7 +14,7 @@ public record ArticleCommentDto(
         String content
 ) {
 
-    public static ArticleCommentDto of(Long articleId, LocalDateTime createdAt, String createdBy, LocalDateTime modifiedAt, String modifiedBy, String content) {
-        return new ArticleCommentDto(articleId, createdAt, createdBy, modifiedAt, modifiedBy, content);
+    public static ArticleCommentDto of(Long id, Long articleId, LocalDateTime createdAt, String createdBy, LocalDateTime modifiedAt, String modifiedBy, String content) {
+        return new ArticleCommentDto(id, articleId, createdAt, createdBy, modifiedAt, modifiedBy, content);
     }
 }

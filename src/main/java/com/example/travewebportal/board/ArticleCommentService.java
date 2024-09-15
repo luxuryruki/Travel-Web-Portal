@@ -1,5 +1,6 @@
 package com.example.travewebportal.board;
 
+import com.example.travewebportal.board.domain.ArticleComment;
 import com.example.travewebportal.board.dto.ArticleCommentDto;
 import com.example.travewebportal.board.dto.ArticleDto;
 import com.example.travewebportal.board.dto.ArticleUpdateDto;
@@ -29,4 +30,12 @@ public class ArticleCommentService {
     public void saveArticleComment(ArticleCommentDto dto){
 
     }
+    public void updateArticleComment(ArticleCommentDto dto){
+
+    };
+
+    public void deleteArticleComment(Long dto){
+
+    };
+
 }
