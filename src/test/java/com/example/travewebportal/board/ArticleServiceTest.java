@@ -1,8 +1,11 @@
 package com.example.travewebportal.board;
 
 import com.example.travewebportal.board.domain.Article;
+import com.example.travewebportal.board.domain.UserAccount;
 import com.example.travewebportal.board.dto.ArticleDto;
 import com.example.travewebportal.board.dto.ArticleUpdateDto;
+import com.example.travewebportal.board.dto.ArticleWithCommentDto;
+import com.example.travewebportal.board.dto.UserAccountDto;
 import com.example.travewebportal.board.enums.SearchType;
 import com.example.travewebportal.board.repository.ArticleRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -13,10 +16,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
+import java.util.Optional;
+import org.assertj.core.api.InstanceOfAssertFactories;
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
@@ -25,43 +30,72 @@ import static org.mockito.BDDMockito.*;
 class ArticleServiceTest {
 
     @InjectMocks
-    private ArticleService sut;
+    private ArticleService articleService;
 
     @Mock
     private ArticleRepository articleRepository;
 
     @DisplayName("Search articles, then return articles")
     @Test
+    void givenNoSearchParam_whenSearchingArticles_thenReturnArticleList(){
+
+        //Given
+        Pageable pageable = Pageable.ofSize(20);
+        given(articleRepository.findAll(pageable)).willReturn(Page.empty());
+        
+        //When
+        Page<ArticleDto> articles =  articleService.searchArticles(null,null, pageable); // Title, Content, Id, Name, Hashtag
+        //Then
+        assertThat(articles).isEmpty();
+        then(articleRepository).should().findAll(pageable);
+    }
+    @DisplayName("Search articles, then return articles")
+    @Test
     void givenSearchParam_whenSearchingArticles_thenReturnArticles(){
 
         //Given
-//        SearchParameters param = SearchParameters.of(SearchType.TITLE,"search keyword");
+        SearchType searchType = SearchType.TITLE;
+        String keyword = "title";
+        Pageable pageable = Pageable.ofSize(20);
+        given(articleRepository.findByTitle(keyword, pageable)).willReturn(Page.empty());
+
         //When
-        Page<ArticleDto> articles =  sut.searchArticles(SearchType.TITLE,"search keyword"); // Title, Content, Id, Name, Hashtag
+        Page<ArticleDto> articles =  articleService.searchArticles(searchType,"search keyword", pageable); // Title, Content, Id, Name, Hashtag
         //Then
-        assertThat(articles).isNotNull();
+        assertThat(articles).isEmpty();
+        then(articleRepository).should().findByTitle(keyword,pageable);
+
     }
+
+
 
     @DisplayName("Read an article, then return the article")
     @Test
     void givenArticleId_whenSearchingArticle_thenReturnArticle(){
 
         //Given
-//        SearchParameters param = SearchParameters.of(SearchType.TITLE,"search keyword");
+        Long id = 1L;
+        Article article = createArticle();
+        given(articleRepository.findById(id)).willReturn(Optional.of(article));
+
         //When
-        ArticleDto article =  sut.searchArticle(1L);
+        ArticleWithCommentDto dto =  articleService.getArticle(id);
         //Then
-        assertThat(article).isNotNull();
+        assertThat(dto)
+                .hasFieldOrPropertyWithValue("title",article.getTitle())
+                .hasFieldOrPropertyWithValue("content",article.getContent())
+                .hasFieldOrPropertyWithValue("hashTag",article.getHashTag());
+        then(articleRepository).should().findById(id);
     }
 
     @DisplayName("create article")
     @Test
     void givenArticleInfo_whenSavingArticle_thenSavesArticle(){
         //Given
-        ArticleDto dto = ArticleDto.of(LocalDateTime.now(),"Johnny","title","content","hashTag");
+        ArticleDto dto = ArticleDto.of(1L, createUserAccountDto(),"title","content","hashTag",LocalDateTime.now(),"Johnny",LocalDateTime.now(),"Johnny");
         given(articleRepository.save(any(Article.class))).willReturn(null);
         //When
-        sut.saveArticle(dto);
+        articleService.saveArticle(dto);
 
         //Then
         then(articleRepository).should().save(any(Article.class));
@@ -74,7 +108,7 @@ class ArticleServiceTest {
         ArticleUpdateDto dto = ArticleUpdateDto.of("title","content","hashTag");
         given(articleRepository.save(any(Article.class))).willReturn(null);
         //When
-        sut.updateArticle(1L, dto);
+        articleService.updateArticle(1L, dto);
 
         //Then
         then(articleRepository).should().save(any(Article.class));
@@ -87,9 +121,42 @@ class ArticleServiceTest {
 
         willDoNothing().given(articleRepository).delete(any(Article.class));
         //When
-        sut.deleteArticle(1L);
+        articleService.deleteArticle(1L);
 
         //Then
         then(articleRepository).should().delete(any(Article.class));
+    }
+
+    private Article createArticle(){
+        return Article.of(
+                createUserAccount(),
+                "title",
+                "content",
+                "hashTag"
+        );
+    }
+
+    private UserAccount createUserAccount(){
+        return UserAccount.of(
+                "Johnny",
+                "pw",
+                "johnny@google.com",
+                "Johnny",
+                null
+        );
+    }
+    private UserAccountDto createUserAccountDto(){
+        return UserAccountDto.of(
+                1L,
+                "Johnny",
+                "pw",
+                "johnny@google.com",
+                "Johnny",
+                null,
+                LocalDateTime.now(),
+                "Johnny",
+                LocalDateTime.now(),
+                "Johnny"
+        );
     }
 }

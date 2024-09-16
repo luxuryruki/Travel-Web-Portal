@@ -7,6 +7,7 @@ import com.example.travewebportal.board.dto.ArticleCommentDto;
 import com.example.travewebportal.board.dto.UserAccountDto;
 import com.example.travewebportal.board.repository.ArticleCommentRepository;
 import com.example.travewebportal.board.repository.ArticleRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -56,9 +57,9 @@ class ArticleCommentServiceTest {
 
     @DisplayName("create article comments")
     @Test
-    void given_when_then(){
+    void givenArticleCommentInfo_whenSavingArticleComment_thenSavesArticleComment(){
         //given
-        ArticleCommentDto dto = createArticleCommentDto("댓글");
+        ArticleCommentDto dto = createArticleCommentDto("comment");
         given(articleRepository.getReferenceById(dto.articleId())).willReturn(createArticle());
         given(articleCommentRepository.save(any(ArticleComment.class))).willReturn(null);
         //when
@@ -68,9 +69,71 @@ class ArticleCommentServiceTest {
         then(articleCommentRepository).should().save(any(ArticleComment.class));
     }
 
+    @DisplayName("create article comments fail")
+    @Test
+    void givenNonexistentArticle_whenSavingArticleComment_thenLogsSituationAndDoesNothing(){
+        //given
+        ArticleCommentDto dto = createArticleCommentDto("comment");
+        given(articleRepository.getReferenceById(dto.articleId())).willThrow(EntityNotFoundException.class);
+
+        //when
+        articleCommentService.saveArticleComment(dto);
+        //then
+        then(articleRepository).should().getReferenceById(dto.articleId());
+        then(articleCommentRepository).shouldHaveNoInteractions();
+    }
+
+    @DisplayName("update article comments")
+    @Test
+    void givenArticleCommentInfo_whenUpdatingArticleComment_thenUpdatesArticleComment(){
+        //given
+        String oldComment = "comment";
+        String updatedComment = "updated comment";
+        ArticleComment articleComment =createArticleComment(oldComment);
+        ArticleCommentDto dto =createArticleCommentDto(updatedComment);
+        given(articleCommentRepository.getReferenceById(dto.id())).willReturn(articleComment);
+
+        //when
+        articleCommentService.updateArticleComment(dto);
+
+        //then
+        assertThat(articleComment.getContent())
+                .isNotEqualTo(oldComment)
+                .isEqualTo(updatedComment);
+        then(articleCommentRepository).should().getReferenceById(dto.id());
+
+    }
+
+    @DisplayName("update article comment fail")
+    @Test
+    void givenNonexistentArticleComment_whenUpdatingArticleComment_thenLogsWarningAndDoesNothing(){
+        //given
+        ArticleCommentDto dto = createArticleCommentDto("comment");
+        given(articleCommentRepository.getReferenceById(dto.id())).willThrow(EntityNotFoundException.class);
+        //when
+        articleCommentService.updateArticleComment(dto);
+        //then
+        then(articleCommentRepository).should().getReferenceById(dto.id());
+    }
+
+    @DisplayName("delete article")
+    @Test
+    void givenArticleCommentId_whenDeletingArticleComment_thenDeletesArticleComment(){
+        //given
+        Long id = 1L;
+        ArticleCommentDto dto = createArticleCommentDto("comment");
+        willDoNothing().given(articleRepository).deleteById(id);
+        //when
+        articleCommentService.deleteArticleComment(id);
+        //then
+        then(articleCommentRepository).should().deleteById(id);
+    }
+
     private ArticleCommentDto createArticleCommentDto(String comment){
         return ArticleCommentDto.of(
                 1L,
+                1L,
+                createUserAccountDto(),
                 LocalDateTime.now(),
                 "Johnny",
                 LocalDateTime.now(),

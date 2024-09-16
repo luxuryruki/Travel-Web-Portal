@@ -33,6 +33,7 @@ spring:
       hibernate:
         format_sql: true #보여지는 sql 포맷을 보기 좋게 설정
         default_batch_fetch_size: 100 # 연관관계가 있는 테이블들 한번에 셀렉트 문으로 바꿔준다.
+    open-in-view: false #OSIV 설정
   h2:
     console:
       enabled: false # h2 disable
