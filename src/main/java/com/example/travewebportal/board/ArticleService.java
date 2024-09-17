@@ -3,6 +3,7 @@ package com.example.travewebportal.board;
 import com.example.travewebportal.board.dto.ArticleCommentDto;
 import com.example.travewebportal.board.dto.ArticleDto;
 import com.example.travewebportal.board.dto.ArticleUpdateDto;
+import com.example.travewebportal.board.dto.ArticleWithCommentDto;
 import com.example.travewebportal.board.enums.SearchType;
 import com.example.travewebportal.board.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
@@ -41,5 +42,7 @@ public class ArticleService {
     public void deleteArticle(long articleId) {
     }
 
-
+    public ArticleWithCommentDto getArticle(Long id){
+        return null;
+    };
 }
