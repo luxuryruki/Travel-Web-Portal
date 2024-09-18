@@ -39,7 +39,7 @@ public class ArticleService {
     public void updateArticle(long articleId,ArticleUpdateDto dto) {
     }
 
-    public void deleteArticle(long articleId) {
+    public void deleteArticle(long articleId, String userId) {
     }
 
     public ArticleWithCommentDto getArticle(Long id){
