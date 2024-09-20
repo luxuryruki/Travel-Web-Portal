@@ -12,5 +12,5 @@ import java.util.List;
 @RepositoryRestResource
 public interface ArticleCommentRepository extends JpaRepository<ArticleComment, Long> {
     List<ArticleComment> findByArticle_Id(Long id);
-    void deleteByIdAndUserAccount_UserId(Long articleCommentId, String userId);
+
 }

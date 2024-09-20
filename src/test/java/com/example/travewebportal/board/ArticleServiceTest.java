@@ -117,29 +117,14 @@ class ArticleServiceTest {
     @DisplayName("delete article")
     @Test
     void givenArticleId_whenDeletingArticle_thenDeletesArticle(){
-//        //Given
-//
-//        willDoNothing().given(articleRepository).delete(any(Article.class));
-//        //When
-//        articleService.deleteArticle(1L);
-//
-//        //Then
-//        then(articleRepository).should().delete(any(Article.class));
-        // Given
-        Long articleId = 1L;
-        String userId = "uno";
-        given(articleRepository.getReferenceById(articleId)).willReturn(createArticle());
-        willDoNothing().given(articleRepository).deleteByIdAndUserAccount_UserId(articleId, userId);
-        willDoNothing().given(articleRepository).flush();
+        //Given
 
-        // When
-        articleService.deleteArticle(1L, userId);
+        willDoNothing().given(articleRepository).delete(any(Article.class));
+        //When
+        articleService.deleteArticle(1L);
 
-        // Then
-        then(articleRepository).should().getReferenceById(articleId);
-        then(articleRepository).should().deleteByIdAndUserAccount_UserId(articleId, userId);
-        then(articleRepository).should().flush();
-
+        //Then
+        then(articleRepository).should().delete(any(Article.class));
     }
 
     private Article createArticle(){

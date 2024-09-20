@@ -10,5 +10,4 @@ import org.springframework.stereotype.Repository;
 @RepositoryRestResource
 public interface ArticleRepository extends JpaRepository<Article, Long> {
     Page<Article> findByTitle(String title, Pageable pageable);
-    void deleteByIdAndUserAccount_UserId(Long articleId, String userid);
 }
