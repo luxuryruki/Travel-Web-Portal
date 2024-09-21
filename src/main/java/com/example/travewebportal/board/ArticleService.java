@@ -20,11 +20,21 @@ import java.util.List;
 @Service
 public class ArticleService {
 
-    private final ArticleRepository repository;
+    private final ArticleRepository articleRepository;
 
     @Transactional(readOnly = true)
-    public Page<ArticleDto> searchArticles(SearchType title, String searchKeyword, Pageable page) {
-        return Page.empty();
+    public Page<ArticleDto> searchArticles(SearchType searchType, String searchKeyword, Pageable pageable) {
+        if(searchKeyword == null || searchKeyword.isBlank()){
+            return articleRepository.findAll(pageable).map(ArticleDto::from);
+        }
+
+        return switch (searchType){
+            case  TITLE -> articleRepository.findByTitleContaining(searchKeyword,pageable).map(ArticleDto::from);
+            case  CONTENT -> articleRepository.findByContentContaining(searchKeyword,pageable).map(ArticleDto::from);
+            case  ID -> articleRepository.findByUserAccount_UserId(searchKeyword,pageable).map(ArticleDto::from);
+            case  NAME -> articleRepository.findByNameContaining(searchKeyword,pageable).map(ArticleDto::from);
+            case  HASHTAG -> articleRepository.findByHashTagContaining( searchKeyword,pageable).map(ArticleDto::from);
+        };
 
     }
 

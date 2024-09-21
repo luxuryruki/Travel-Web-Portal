@@ -9,5 +9,9 @@ import org.springframework.stereotype.Repository;
 
 @RepositoryRestResource
 public interface ArticleRepository extends JpaRepository<Article, Long> {
-    Page<Article> findByTitle(String title, Pageable pageable);
+    Page<Article> findByTitleContaining(String title, Pageable pageable);
+    Page<Article> findByContentContaining(String content, Pageable pageable);
+    Page<Article> findByUserAccount_UserId (String userI, Pageable pageable);
+    Page<Article> findByNameContaining(String name, Pageable pageable);
+    Page<Article> findByHashTagContaining(String hashTag, Pageable pageable);
 }

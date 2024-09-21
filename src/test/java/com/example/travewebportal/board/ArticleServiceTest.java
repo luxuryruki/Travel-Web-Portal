@@ -35,7 +35,7 @@ class ArticleServiceTest {
     @Mock
     private ArticleRepository articleRepository;
 
-    @DisplayName("Search articles, then return articles")
+    @DisplayName("Search articles without prams, then return articles")
     @Test
     void givenNoSearchParam_whenSearchingArticles_thenReturnArticleList(){
 
@@ -49,6 +49,23 @@ class ArticleServiceTest {
         assertThat(articles).isEmpty();
         then(articleRepository).should().findAll(pageable);
     }
+
+    @DisplayName("Search articles with prams, then return articles")
+    @Test
+    void givenSearchParameters_whenSearchingArticles_thenReturnsArticlePage() {
+        // Given
+        SearchType searchType = SearchType.TITLE;
+        String searchKeyword = "title";
+        Pageable pageable = Pageable.ofSize(20);
+        given(articleRepository.findByTitleContaining(searchKeyword, pageable)).willReturn(Page.empty());
+
+        // When
+        Page<ArticleDto> articles = articleService.searchArticles(searchType, searchKeyword, pageable);
+
+        // Then
+        assertThat(articles).isEmpty();
+        then(articleRepository).should().findByTitleContaining(searchKeyword, pageable);
+    }
     @DisplayName("Search articles, then return articles")
     @Test
     void givenSearchParam_whenSearchingArticles_thenReturnArticles(){
@@ -57,13 +74,13 @@ class ArticleServiceTest {
         SearchType searchType = SearchType.TITLE;
         String keyword = "title";
         Pageable pageable = Pageable.ofSize(20);
-        given(articleRepository.findByTitle(keyword, pageable)).willReturn(Page.empty());
+        given(articleRepository.findByTitleContaining(keyword, pageable)).willReturn(Page.empty());
 
         //When
         Page<ArticleDto> articles =  articleService.searchArticles(searchType,"search keyword", pageable); // Title, Content, Id, Name, Hashtag
         //Then
         assertThat(articles).isEmpty();
-        then(articleRepository).should().findByTitle(keyword,pageable);
+        then(articleRepository).should().findByTitleContaining(keyword,pageable);
 
     }
 
