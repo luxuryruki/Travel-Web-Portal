@@ -40,10 +40,8 @@ public class ArticleService {
     }
 
     @Transactional(readOnly = true)
-    public ArticleWithCommentDto getArticle(long id) {
-        return articleRepository.findById(id)
-                .map(ArticleWithCommentDto::from)
-                .orElseThrow(()->new EntityNotFoundException("not found an article" + id));
+    public ArticleDto searchArticle(long l) {
+        return null;
     }
 
     public void saveArticle(ArticleDto dto) {
@@ -56,6 +54,8 @@ public class ArticleService {
     }
 
     public ArticleWithCommentDto getArticle(Long id){
-        return null;
+        return articleRepository.findById(id)
+                .map(ArticleWithCommentDto::from)
+                .orElseThrow(()->new EntityNotFoundException("not found an article" + id));
     };
 }
