@@ -14,7 +14,8 @@ public record ArticleDto (
         String hashTag,
         LocalDateTime createdAt,
         String createdBy,
-        LocalDateTime modifiedAt, String modifiedBy) {
+        LocalDateTime modifiedAt,
+        String modifiedBy) {
 
     public static ArticleDto of(Long id,
                                 UserAccountDto userAccountDto,

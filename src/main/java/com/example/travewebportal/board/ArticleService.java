@@ -6,6 +6,7 @@ import com.example.travewebportal.board.dto.ArticleUpdateDto;
 import com.example.travewebportal.board.dto.ArticleWithCommentDto;
 import com.example.travewebportal.board.enums.SearchType;
 import com.example.travewebportal.board.repository.ArticleRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -39,8 +40,10 @@ public class ArticleService {
     }
 
     @Transactional(readOnly = true)
-    public ArticleDto searchArticle(long l) {
-        return null;
+    public ArticleWithCommentDto getArticle(long id) {
+        return articleRepository.findById(id)
+                .map(ArticleWithCommentDto::from)
+                .orElseThrow(()->new EntityNotFoundException("not found an article" + id));
     }
 
     public void saveArticle(ArticleDto dto) {
