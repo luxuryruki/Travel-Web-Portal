@@ -8,6 +8,7 @@ import com.example.travewebportal.board.dto.ArticleWithCommentDto;
 import com.example.travewebportal.board.dto.UserAccountDto;
 import com.example.travewebportal.board.enums.SearchType;
 import com.example.travewebportal.board.repository.ArticleRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -66,25 +67,6 @@ class ArticleServiceTest {
         assertThat(articles).isEmpty();
         then(articleRepository).should().findByTitleContaining(searchKeyword, pageable);
     }
-    @DisplayName("Search articles, then return articles")
-    @Test
-    void givenSearchParam_whenSearchingArticles_thenReturnArticles(){
-
-        //Given
-        SearchType searchType = SearchType.TITLE;
-        String keyword = "title";
-        Pageable pageable = Pageable.ofSize(20);
-        given(articleRepository.findByTitleContaining(keyword, pageable)).willReturn(Page.empty());
-
-        //When
-        Page<ArticleDto> articles =  articleService.searchArticles(searchType,"search keyword", pageable); // Title, Content, Id, Name, Hashtag
-        //Then
-        assertThat(articles).isEmpty();
-        then(articleRepository).should().findByTitleContaining(keyword,pageable);
-
-    }
-
-
 
     @DisplayName("Read an article, then return the article")
     @Test
@@ -105,11 +87,28 @@ class ArticleServiceTest {
         then(articleRepository).should().findById(id);
     }
 
+    @DisplayName("Read non-existent article, then return throw excepti on")
+    @Test
+    void givenNonexistentArticleId_whenSearchingArticle_thenReturnThrowsException(){
+
+        //Given
+        Long id = 0L;
+        Article article = createArticle();
+        given(articleRepository.findById(id)).willReturn(Optional.empty());
+
+        //When
+        Throwable t = catchThrowable(()->articleService.getArticle(id));
+        //Then
+        assertThat(t)
+                .isInstanceOf(EntityNotFoundException.class)
+                .hasMessage("not found an article : " + id);
+        then(articleRepository).should().findById(id);
+    }
     @DisplayName("create article")
     @Test
     void givenArticleInfo_whenSavingArticle_thenSavesArticle(){
         //Given
-        ArticleDto dto = ArticleDto.of(1L, createUserAccountDto(),"title","content","hashTag",LocalDateTime.now(),"Johnny",LocalDateTime.now(),"Johnny");
+        ArticleDto dto = createArticleDto();
         given(articleRepository.save(any(Article.class))).willReturn(null);
         //When
         articleService.saveArticle(dto);
@@ -117,6 +116,8 @@ class ArticleServiceTest {
         //Then
         then(articleRepository).should().save(any(Article.class));
     }
+
+
 
     @DisplayName("update article")
     @Test
@@ -153,6 +154,7 @@ class ArticleServiceTest {
         );
     }
 
+
     private UserAccount createUserAccount(){
         return UserAccount.of(
                 "Johnny",
@@ -175,5 +177,8 @@ class ArticleServiceTest {
                 LocalDateTime.now(),
                 "Johnny"
         );
+    }
+    private ArticleDto createArticleDto() {
+        return ArticleDto.of(1L, createUserAccountDto(), "title", "content", "hashTag", LocalDateTime.now(), "Johnny", LocalDateTime.now(), "Johnny");
     }
 }

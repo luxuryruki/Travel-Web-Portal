@@ -45,9 +45,11 @@ public class ArticleService {
     }
 
     public void saveArticle(ArticleDto dto) {
+        articleRepository.save(dto.toEntity());
     }
 
     public void updateArticle(long articleId,ArticleUpdateDto dto) {
+
     }
 
     public void deleteArticle(long articleId) {
@@ -56,6 +58,6 @@ public class ArticleService {
     public ArticleWithCommentDto getArticle(Long id){
         return articleRepository.findById(id)
                 .map(ArticleWithCommentDto::from)
-                .orElseThrow(()->new EntityNotFoundException("not found an article" + id));
+                .orElseThrow(()->new EntityNotFoundException("not found an article : " + id));
     };
 }
