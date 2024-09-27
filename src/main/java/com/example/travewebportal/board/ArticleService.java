@@ -67,6 +67,7 @@ public class ArticleService {
     }
 
     public void deleteArticle(long articleId) {
+        articleRepository.deleteById(articleId);
     }
 
     public ArticleWithCommentDto getArticle(Long id){
