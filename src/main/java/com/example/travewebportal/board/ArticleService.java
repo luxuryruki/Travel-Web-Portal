@@ -1,13 +1,17 @@
 package com.example.travewebportal.board;
 
+import com.example.travewebportal.board.domain.Article;
+import com.example.travewebportal.board.domain.UserAccount;
 import com.example.travewebportal.board.dto.ArticleCommentDto;
 import com.example.travewebportal.board.dto.ArticleDto;
 import com.example.travewebportal.board.dto.ArticleUpdateDto;
 import com.example.travewebportal.board.dto.ArticleWithCommentDto;
 import com.example.travewebportal.board.enums.SearchType;
 import com.example.travewebportal.board.repository.ArticleRepository;
+import com.example.travewebportal.board.repository.UserAccountRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,14 +19,17 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Transactional
 @Service
+@Slf4j
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
-
+    private final UserAccountRepository userAccountRepository;
     @Transactional(readOnly = true)
     public Page<ArticleDto> searchArticles(SearchType searchType, String searchKeyword, Pageable pageable) {
         if(searchKeyword == null || searchKeyword.isBlank()){
@@ -48,8 +55,15 @@ public class ArticleService {
         articleRepository.save(dto.toEntity());
     }
 
-    public void updateArticle(long articleId,ArticleUpdateDto dto) {
-
+    public void updateArticle(ArticleDto dto) {
+        try {
+            Article article = articleRepository.getReferenceById(dto.id());
+            if (dto.title() != null) article.setTitle(dto.title());
+            if (dto.content() != null) article.setContent(dto.content());
+            article.setHashTag(dto.hashTag());
+        }catch (EntityNotFoundException e){
+            log.warn("게시글 업데이트 실패, 게시글을 찾을 수 없습니다. - ㅇ새: {}", dto);
+        }
     }
 
     public void deleteArticle(long articleId) {
