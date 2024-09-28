@@ -108,7 +108,7 @@ class ArticleServiceTest {
     @Test
     void givenArticleInfo_whenSavingArticle_thenSavesArticle(){
         //Given
-        ArticleDto dto = createArticleDto();
+        ArticleDto dto = createArticleDto("title","content");
         given(articleRepository.save(any(Article.class))).willReturn(null);
         //When
         articleService.saveArticle(dto);
@@ -123,26 +123,32 @@ class ArticleServiceTest {
     @Test
     void givenArticleModifiedInfo_whenUpdatingArticle_thenUpdatesArticle(){
         //Given
-        ArticleUpdateDto dto = ArticleUpdateDto.of("title","content","hashTag");
-        given(articleRepository.save(any(Article.class))).willReturn(null);
+        Article article = createArticle();
+        ArticleDto dto = createArticleDto("title","content" );
+        given(articleRepository.getReferenceById(dto.id())).willReturn(article);
+
         //When
-        articleService.updateArticle(1L, dto);
+        articleService.updateArticle(dto);
 
         //Then
-        then(articleRepository).should().save(any(Article.class));
+        assertThat(article)
+                .hasFieldOrPropertyWithValue("title",dto.title())
+                .hasFieldOrPropertyWithValue("content",dto.content())
+                .hasFieldOrPropertyWithValue("hashTag",dto.hashTag());
+        then(articleRepository).should().getReferenceById(dto.id());
     }
 
     @DisplayName("delete article")
     @Test
     void givenArticleId_whenDeletingArticle_thenDeletesArticle(){
         //Given
-
-        willDoNothing().given(articleRepository).delete(any(Article.class));
+        Long articleId = 1L;
+        willDoNothing().given(articleRepository).deleteById(articleId);
         //When
         articleService.deleteArticle(1L);
 
         //Then
-        then(articleRepository).should().delete(any(Article.class));
+        then(articleRepository).should().deleteById(articleId);
     }
 
     private Article createArticle(){
@@ -179,6 +185,19 @@ class ArticleServiceTest {
         );
     }
     private ArticleDto createArticleDto() {
-        return ArticleDto.of(1L, createUserAccountDto(), "title", "content", "hashTag", LocalDateTime.now(), "Johnny", LocalDateTime.now(), "Johnny");
+        return createArticleDto("title", "content");
+    }
+
+    private ArticleDto createArticleDto(String title, String content) {
+        return ArticleDto.of(
+                1L,
+                createUserAccountDto(),
+                title,
+                content,
+                null,
+                LocalDateTime.now(),
+                "Uno",
+                LocalDateTime.now(),
+                "Uno");
     }
 }
