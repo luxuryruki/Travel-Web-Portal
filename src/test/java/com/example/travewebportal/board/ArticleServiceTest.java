@@ -3,8 +3,7 @@ package com.example.travewebportal.board;
 import com.example.travewebportal.board.domain.Article;
 import com.example.travewebportal.board.domain.UserAccount;
 import com.example.travewebportal.board.dto.ArticleDto;
-import com.example.travewebportal.board.dto.ArticleUpdateDto;
-import com.example.travewebportal.board.dto.ArticleWithCommentDto;
+import com.example.travewebportal.board.dto.ArticleWithCommentsDto;
 import com.example.travewebportal.board.dto.UserAccountDto;
 import com.example.travewebportal.board.enums.SearchType;
 import com.example.travewebportal.board.repository.ArticleRepository;
@@ -12,7 +11,6 @@ import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -20,9 +18,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
-import org.assertj.core.api.InstanceOfAssertFactories;
+
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
@@ -78,7 +75,7 @@ class ArticleServiceTest {
         given(articleRepository.findById(id)).willReturn(Optional.of(article));
 
         //When
-        ArticleWithCommentDto dto =  articleService.getArticle(id);
+        ArticleWithCommentsDto dto =  articleService.getArticle(id);
         //Then
         assertThat(dto)
                 .hasFieldOrPropertyWithValue("title",article.getTitle())
@@ -172,7 +169,6 @@ class ArticleServiceTest {
     }
     private UserAccountDto createUserAccountDto(){
         return UserAccountDto.of(
-                1L,
                 "Johnny",
                 "pw",
                 "johnny@google.com",

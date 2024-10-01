@@ -1,11 +1,8 @@
 package com.example.travewebportal.board;
 
 import com.example.travewebportal.board.domain.Article;
-import com.example.travewebportal.board.domain.UserAccount;
-import com.example.travewebportal.board.dto.ArticleCommentDto;
 import com.example.travewebportal.board.dto.ArticleDto;
-import com.example.travewebportal.board.dto.ArticleUpdateDto;
-import com.example.travewebportal.board.dto.ArticleWithCommentDto;
+import com.example.travewebportal.board.dto.ArticleWithCommentsDto;
 import com.example.travewebportal.board.enums.SearchType;
 import com.example.travewebportal.board.repository.ArticleRepository;
 import com.example.travewebportal.board.repository.UserAccountRepository;
@@ -16,11 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Transactional
@@ -70,9 +62,9 @@ public class ArticleService {
         articleRepository.deleteById(articleId);
     }
 
-    public ArticleWithCommentDto getArticle(Long id){
+    public ArticleWithCommentsDto getArticle(Long id){
         return articleRepository.findById(id)
-                .map(ArticleWithCommentDto::from)
+                .map(ArticleWithCommentsDto::from)
                 .orElseThrow(()->new EntityNotFoundException("not found an article : " + id));
     };
 }
