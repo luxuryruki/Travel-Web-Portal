@@ -2,6 +2,9 @@ package com.example.travewebportal.board.controller;
 
 import com.example.travewebportal.board.ArticleService;
 import com.example.travewebportal.board.config.SecurityConfig;
+import com.example.travewebportal.board.dto.ArticleDto;
+import com.example.travewebportal.board.dto.ArticleWithCommentsDto;
+import com.example.travewebportal.board.dto.UserAccountDto;
 import org.antlr.v4.runtime.atn.SemanticContext;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
@@ -14,6 +17,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
+import java.time.LocalDateTime;
+import java.util.Set;
 
 import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -57,12 +63,17 @@ class ArticleControllerTest {
     @Test
     public void given_whenRequestingArticlesView_thenReturnArticlesView() throws Exception {
 
+        //given
+        Long articleId = 1L;
+        given(articleService.getArticle(articleId)).willReturn(createArticleWithCommentsDto());
+
         mvc.perform(get("/articles/1"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(view().name("articles/detail"))
                 .andExpect(model().attributeExists("article"))
                 .andExpect(model().attributeExists("articleComments"));
+        then(articleService).should().getArticle(articleId);
 //                .andDo(print());
     }
 
@@ -86,5 +97,34 @@ class ArticleControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML));
 //                .andDo(print());
+    }
+
+    private ArticleWithCommentsDto createArticleWithCommentsDto() {
+        return ArticleWithCommentsDto.of(
+                1L,
+                createUserAccountDto(),
+                Set.of(),
+                "title",
+                "content",
+                "#java",
+                LocalDateTime.now(),
+                "johnny",
+                LocalDateTime.now(),
+                "johnny"
+        );
+    }
+
+    private UserAccountDto createUserAccountDto() {
+        return UserAccountDto.of(
+                "johnny",
+                "pw",
+                "johnny@mail.com",
+                "Johnny",
+                "memo",
+                LocalDateTime.now(),
+                "johnny",
+                LocalDateTime.now(),
+                "johnny"
+        );
     }
 }
