@@ -12,8 +12,7 @@ import java.util.Set;
 @Getter
 @ToString(callSuper = true)
 @Table(indexes = {
-        @Index(columnList = "title"),
-        @Index(columnList = "hashTag"),
+        @Index(columnList = "email"),
         @Index(columnList = "createdAt"),
         @Index(columnList = "createdBy")
 
