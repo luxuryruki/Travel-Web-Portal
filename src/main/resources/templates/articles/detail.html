@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
@@ -7,27 +7,34 @@
 <body>
   <header id="header"></header>
 
-  <main>
-    <header>
+  <main id ="article-main">
+    <header id="article-header">
       <h1>첫번째 글</h1>
     </header>
-    <aside>
-      <p>Johnny</p>
-      <p><a href="mailto:johnny@gmail.com">johnny@gmail.com</a></p>
-      <p><time datetime="2024-01-01T00:00:00">2024=01-01</time></p>
-      <p>#Java</p>
-    </aside>
-    <section>
-      <p>본문<br><br></p>
+    <div class="row g-5">
+      <section>
+        <aside>
+          <p><span id="nicname">Johnny</span></p>
+          <p><a id="email" href="mailto:luxuryruki@gmail.com">luxuryruki@gmail.com</a></p>
+          <p><item id="created-at" datetime="2024-10-20T00:00:00">2024-10-20</item></p>
+          <p><span id="hashtag">#hashtag</span></p>
+        </aside>
+      </section>
 
-      <div>
+      <article id="article-content" class="col-md-7" col-lg-8>
+        <pre>본문<br><br></pre>
+      </article>
+    </div>
+
+    <div>
+      <section>
         <form>
           <label for="articleComment" hidden>댓글</label>
           <textarea id="articleComment" placeholder="댓글 작성.." rows="3"></textarea>
-          <button type="submit">작성</button>
+          <button class="btn btn-primary" id="comment-submit" type="submit">작성</button>
         </form>
 
-        <ul>
+        <ul id="article-comment" class="row col-7">
           <li>
             <div>
               <time><small>2024-01-01</small></time>
