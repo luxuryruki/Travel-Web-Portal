@@ -13,7 +13,7 @@
         <attr sel="#article-content/pre" th:text="*{content}" />
     </attr>
 
-    <attr sel="#article-contents" th:remove="all-but-first">
+    <attr sel="#article-comments" th:remove="all-but-first">
         <attr sel="li[0]" th:each="articleComment : ${articleComments}" >
             <attr sel="div/strong" th:text="${articleComments.nickname}" />
             <attr sel="div/small/time" th:datetime="${articleComments.createdAt}" />
