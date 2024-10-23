@@ -1,8 +1,6 @@
 package com.example.travewebportal.board.controller;
 
-import com.example.travewebportal.board.ArticleService;
-import com.example.travewebportal.board.dto.ArticleCommentResponse;
-import com.example.travewebportal.board.dto.ArticleWithCommentsDto;
+import com.example.travewebportal.board.service.ArticleService;
 import com.example.travewebportal.board.enums.SearchType;
 import com.example.travewebportal.board.response.ArticleResponse;
 import com.example.travewebportal.board.response.ArticleWithCommentsResponse;
@@ -16,8 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
 
 @RequiredArgsConstructor
 @RequestMapping("/articles")

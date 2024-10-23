@@ -1,11 +1,9 @@
 package com.example.travewebportal.board.controller;
 
-import com.example.travewebportal.board.ArticleService;
+import com.example.travewebportal.board.service.ArticleService;
 import com.example.travewebportal.board.config.SecurityConfig;
-import com.example.travewebportal.board.dto.ArticleDto;
 import com.example.travewebportal.board.dto.ArticleWithCommentsDto;
 import com.example.travewebportal.board.dto.UserAccountDto;
-import org.antlr.v4.runtime.atn.SemanticContext;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -25,7 +23,6 @@ import static org.mockito.BDDMockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("View Controller - Article")
 @Import(SecurityConfig.class)

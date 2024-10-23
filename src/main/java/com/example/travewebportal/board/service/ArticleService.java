@@ -1,4 +1,4 @@
-package com.example.travewebportal.board;
+package com.example.travewebportal.board.service;
 
 import com.example.travewebportal.board.domain.Article;
 import com.example.travewebportal.board.dto.ArticleDto;

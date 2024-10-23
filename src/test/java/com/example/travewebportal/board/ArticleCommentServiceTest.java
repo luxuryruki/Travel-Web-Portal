@@ -7,8 +7,8 @@ import com.example.travewebportal.board.dto.ArticleCommentDto;
 import com.example.travewebportal.board.dto.UserAccountDto;
 import com.example.travewebportal.board.repository.ArticleCommentRepository;
 import com.example.travewebportal.board.repository.ArticleRepository;
+import com.example.travewebportal.board.service.ArticleCommentService;
 import jakarta.persistence.EntityNotFoundException;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,7 +18,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;

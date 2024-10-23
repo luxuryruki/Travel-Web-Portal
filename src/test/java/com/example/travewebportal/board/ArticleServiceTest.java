@@ -7,6 +7,7 @@ import com.example.travewebportal.board.dto.ArticleWithCommentsDto;
 import com.example.travewebportal.board.dto.UserAccountDto;
 import com.example.travewebportal.board.enums.SearchType;
 import com.example.travewebportal.board.repository.ArticleRepository;
+import com.example.travewebportal.board.service.ArticleService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
