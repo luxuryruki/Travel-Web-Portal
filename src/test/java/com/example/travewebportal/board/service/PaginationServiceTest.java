@@ -17,7 +17,7 @@ import static org.junit.jupiter.params.provider.Arguments.*;
 
 
 @DisplayName("비즈니스 로직 - 페이지네이션")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = Void.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE, classes = PaginationService.class)
 class PaginationServiceTest {
     private final PaginationService sut;
 
