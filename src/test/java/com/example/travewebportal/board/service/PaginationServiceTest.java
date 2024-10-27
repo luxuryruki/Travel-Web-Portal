@@ -27,7 +27,7 @@ class PaginationServiceTest {
 
     @DisplayName("현재 페이지 번호와 총 페이지 수를 주면, 페이징 바 리스트를 만들어준다.")
     @MethodSource
-    @ParameterizedTest
+    @ParameterizedTest(name="[{index}] 현재 페이지 : {0}, 총 페이지 : {1} => {2}")
     void givenCurrentPageNumberAndTotalPages_whenCalculating_thenReturnPaginationBarNumbers(int currentPageNumber, int totalPages, List<Integer> expected){
         //Given
         //When
