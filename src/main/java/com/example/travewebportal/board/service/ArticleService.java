@@ -33,7 +33,7 @@ public class ArticleService {
             case  CONTENT -> articleRepository.findByContentContaining(searchKeyword,pageable).map(ArticleDto::from);
             case  ID -> articleRepository.findByUserAccount_UserId(searchKeyword,pageable).map(ArticleDto::from);
             case  NICKNAME -> articleRepository.findByUserAccount_NicknameContaining(searchKeyword,pageable).map(ArticleDto::from);
-            case  HASHTAG -> articleRepository.findByHashTagContaining( searchKeyword,pageable).map(ArticleDto::from);
+            case  HASHTAG -> articleRepository.findByHashtagContaining( searchKeyword,pageable).map(ArticleDto::from);
         };
 
     }
@@ -52,7 +52,7 @@ public class ArticleService {
             Article article = articleRepository.getReferenceById(dto.id());
             if (dto.title() != null) article.setTitle(dto.title());
             if (dto.content() != null) article.setContent(dto.content());
-            article.setHashTag(dto.hashTag());
+            article.setHashtag(dto.hashtag());
         }catch (EntityNotFoundException e){
             log.warn("게시글 업데이트 실패, 게시글을 찾을 수 없습니다. - ㅇ새: {}", dto);
         }

@@ -72,8 +72,8 @@ class JpaRepositoryTest {
         // Given
 
         Article article = articleRepository.findById(1L).orElseThrow();
-        String updatedHashTag = "#updated Hashtag";
-        article.setHashTag(updatedHashTag);
+        String updatedHashtag = "#updated Hashtag";
+        article.setHashtag(updatedHashtag);
 
 
         // When
@@ -81,7 +81,7 @@ class JpaRepositoryTest {
         articleRepository.flush(); // Junit 테스트는 트랜잭션의 기본값이 Roll back 이다. 따라서 업데이트 이후 아무 동작을 하지 않으면 어차피 롤백될것이기 때문에 update 작동안하게된다. 따라서 업데이트 테스트를 위해선 flush해서 업데이트 쿼리를 실행해준다. 단, 다시 롤백된기  때문에 바뀐 데이터는 적용은 안된다.
         // Then
         assertThat(savedArticle)
-                .hasFieldOrPropertyWithValue("hashTag", updatedHashTag);
+                .hasFieldOrPropertyWithValue("hashtag", updatedHashtag);
     }
 
     @DisplayName("Delete Test")

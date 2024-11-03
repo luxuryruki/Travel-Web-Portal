@@ -19,7 +19,7 @@ import java.util.Set;
 @ToString(callSuper = true)
 @Table(indexes = {
         @Index(columnList = "title"),
-        @Index(columnList = "hashTag"),
+        @Index(columnList = "hashtag"),
         @Index(columnList = "createdAt"),
         @Index(columnList = "createdBy")
 
@@ -42,7 +42,7 @@ public class Article extends AuditingFields {
     @Column(nullable = false, length = 1000)
     private String content;
     @Setter
-    private String hashTag;
+    private String hashtag;
 
     @ToString.Exclude // 순환참조 방지
     @OrderBy("createdAt DESC")
@@ -52,16 +52,16 @@ public class Article extends AuditingFields {
     protected Article() {
     }
 
-    private Article(UserAccount userAccount, String title, String content, String hashTag) {
+    private Article(UserAccount userAccount, String title, String content, String hashtag) {
         this.userAccount = userAccount;
         this.title = title;
         this.content = content;
-        this.hashTag = hashTag;
+        this.hashtag = hashtag;
     }
 
     //factory method
-    public static Article of(UserAccount userAccount,String title, String content, String hashTag) {
-        return new Article(userAccount, title, content, hashTag);
+    public static Article of(UserAccount userAccount,String title, String content, String hashtag) {
+        return new Article(userAccount, title, content, hashtag);
     }
 
     //동등성 동일성 검사

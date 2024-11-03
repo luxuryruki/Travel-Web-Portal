@@ -11,7 +11,7 @@ public record ArticleDto (
         String title,
         String content,
 
-        String hashTag,
+        String hashtag,
         LocalDateTime createdAt,
         String createdBy,
         LocalDateTime modifiedAt,
@@ -21,11 +21,11 @@ public record ArticleDto (
                                 UserAccountDto userAccountDto,
                                 String title,
                                 String content,
-                                String hashTag,
+                                String hashtag,
                                 LocalDateTime createdAt,
                                 String createdBy,
                                 LocalDateTime modifiedAt, String modifiedBy) {
-        return new ArticleDto(id, userAccountDto, title, content, hashTag, createdAt, createdBy, modifiedAt, modifiedBy);
+        return new ArticleDto(id, userAccountDto, title, content, hashtag, createdAt, createdBy, modifiedAt, modifiedBy);
     }
 
     public static ArticleDto from(Article entity){
@@ -34,7 +34,7 @@ public record ArticleDto (
                 UserAccountDto.from(entity.getUserAccount()),
                 entity.getTitle(),
                 entity.getContent(),
-                entity.getHashTag(),
+                entity.getHashtag(),
                 entity.getCreatedAt(),
                 entity.getCreatedBy(),
                 entity.getModifiedAt(),
@@ -47,7 +47,7 @@ public record ArticleDto (
                 userAccountDto.toEntity(),
                 title,
                 content,
-                hashTag
+                hashtag
         );
     }
 }

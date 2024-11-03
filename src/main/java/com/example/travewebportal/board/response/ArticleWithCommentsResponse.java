@@ -38,7 +38,7 @@ public record ArticleWithCommentsResponse(
                 dto.id(),
                 dto.title(),
                 dto.content(),
-                dto.hashTag(),
+                dto.hashtag(),
                 dto.createdAt(),
                 dto.userAccountDto().email(),
                 nickname,
