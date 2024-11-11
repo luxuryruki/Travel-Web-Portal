@@ -1,5 +1,6 @@
 package com.example.travewebportal.board.controller;
 
+import com.example.travewebportal.board.enums.SearchType;
 import com.example.travewebportal.board.service.ArticleService;
 import com.example.travewebportal.board.config.SecurityConfig;
 import com.example.travewebportal.board.dto.ArticleWithCommentsDto;
@@ -65,6 +66,30 @@ class ArticleControllerTest {
         then(paginationService).should().getPaginationBarNumbers(anyInt(),anyInt());
     }
 
+    @DisplayName("[View][GET] Article List - search")
+    @Test
+    public void givenSearchKeyword_whenSearchingArticleView_thenReturnArticleView() throws Exception {
+
+        //given
+        SearchType searchType = SearchType.TITLE;
+        String searchValue = "title";
+        given(articleService.searchArticles(eq(searchType),eq(searchValue), any(Pageable.class))).willReturn(Page.empty());
+        given(paginationService.getPaginationBarNumbers(anyInt(), anyInt())).willReturn(List.of(0,1,2,3,4));
+        mvc.perform(
+                get("/articles")
+                        .queryParam("searchType",searchType.name())
+                        .queryParam("searchValue",searchValue)
+        )
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
+                .andExpect(view().name("articles/index"))
+                .andExpect(model().attributeExists("articles"))
+                .andExpect(model().attributeExists("searchTypes"));
+//                .andExpect(model().attributeExists("searchType"));
+        then(articleService).should().searchArticles(eq(searchType),eq(searchValue), any(Pageable.class));
+        then(paginationService).should().getPaginationBarNumbers(anyInt(),anyInt());
+    }
+
     @DisplayName("[view][GET] 게시글 리스트 (게시판) 페이지 - 페이징, 정렬 기능")
     @Test
     void givenPagingAndSortingParams_whenSearchingArticlesView_thenReturnsArticlesView() throws Exception {
@@ -111,27 +136,7 @@ class ArticleControllerTest {
 //                .andDo(print());
     }
 
-    @Disabled
-    @DisplayName("[View][GET] Search Article ")
-    @Test
-    public void given_whenRequestingArticlesSearchView_thenReturnArticlesSearchView() throws Exception {
-
-        mvc.perform(get("/article/search"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
-                .andExpect(model().attributeExists("articles/search"));
-//                .andDo(print());
-    }
-    @Disabled
-    @DisplayName("[View][GET] Hashtag Search Article ")
-    @Test
-    public void given_whenRequestingArticlesHashtagSearchView_thenReturnArticlesHashtagSearchView() throws Exception {
-
-        mvc.perform(get("/article/search-hashtag"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML));
-//                .andDo(print());
-    }
+// bn gv        okip
 
     private ArticleWithCommentsDto createArticleWithCommentsDto() {
         return ArticleWithCommentsDto.of(
