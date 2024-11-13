@@ -14,6 +14,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Transactional
 @Service
@@ -67,4 +69,12 @@ public class ArticleService {
                 .map(ArticleWithCommentsDto::from)
                 .orElseThrow(()->new EntityNotFoundException("not found an article : " + id));
     };
+
+    public Page<ArticleDto> searchArticlesViaHashtage(Object o, Pageable pageable) {
+        return  null;
+    }
+
+    public List<String> getHashtags() {
+        return  null;
+    }
 }
