@@ -1,11 +1,14 @@
 package com.example.travewebportal.board.controller;
 
+import com.example.travewebportal.board.dto.ArticleDto;
 import com.example.travewebportal.board.enums.SearchType;
+import com.example.travewebportal.board.repository.ArticleRepository;
 import com.example.travewebportal.board.service.ArticleService;
 import com.example.travewebportal.board.config.SecurityConfig;
 import com.example.travewebportal.board.dto.ArticleWithCommentsDto;
 import com.example.travewebportal.board.dto.UserAccountDto;
 import com.example.travewebportal.board.service.PaginationService;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -40,6 +43,8 @@ class ArticleControllerTest {
     private ArticleService articleService ;
     @MockBean
     private PaginationService paginationService;
+    @Autowired
+    private ArticleRepository articleRepository;
 
 
     public ArticleControllerTest(@Autowired MockMvc mvc) {
@@ -88,6 +93,55 @@ class ArticleControllerTest {
 //                .andExpect(model().attributeExists("searchType"));
         then(articleService).should().searchArticles(eq(searchType),eq(searchValue), any(Pageable.class));
         then(paginationService).should().getPaginationBarNumbers(anyInt(),anyInt());
+    }
+
+
+    @DisplayName("검색어 없이 게시글을 해시태그 검색하면, 빈 페이지를 반환한다.")
+    @Test
+    public void givenNoSearchKeyword_whenSearchingArticleViaHashtag_thenReturnEmptyPage() throws Exception {
+
+        //given
+        Pageable pageable = Pageable.ofSize(20);
+
+        //when
+        Page<ArticleDto> articles = articleService.searchArticlesViaHashtage(null, pageable);
+
+        //then
+        Assertions.assertThat(articles).isEqualTo(Page.empty(pageable));
+        then(articleRepository).shouldHaveNoInteractions();
+    }
+
+    @DisplayName("게시글을 해스태그 검색하면, 게시글 페이지를 반환한다.")
+    @Test
+    public void givenSearchKeyword_whenSearchingArticleViaHashtag_thenReturnArticlePage() throws Exception {
+
+        //given
+        String hashtag = "#java";
+        Pageable pageable = Pageable.ofSize(20);
+        given(articleRepository.findByHashtagContaining(hashtag,pageable)).willReturn(Page.empty(pageable));
+
+        //when
+        Page<ArticleDto> articles = articleService.searchArticlesViaHashtage(hashtag, pageable);
+
+        //then
+        Assertions.assertThat(articles).isEqualTo(Page.empty(pageable));
+        then(articleRepository).should().findByHashtagContaining(hashtag,pageable);
+    }
+
+    @DisplayName("해시태그 조회하면, 유니크 해시태그 리스트를 반환한다.")
+    @Test
+    public void givenNothing_whenCalling_thenReturnHashtags() throws Exception {
+
+        //given
+        List<String> expectedHashtags = List.of("#java", "#spring", "#boot");
+        given(articleRepository.findAllDistinctHashtags()).willReturn(expectedHashtags);
+
+        //when
+        List<String> actualHashtags = articleService.getHashtags();
+
+        //then
+        Assertions.assertThat(actualHashtags).isEqualTo(expectedHashtags);
+        then(articleRepository).should().findAllDistinctHashtags();
     }
 
     @DisplayName("[view][GET] 게시글 리스트 (게시판) 페이지 - 페이징, 정렬 기능")
